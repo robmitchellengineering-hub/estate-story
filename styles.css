@@ -105,7 +105,7 @@ main{max-width:1000px;margin:0 auto;padding:0 1.4rem}
 .analyser-shot figcaption{padding:.55rem .1rem 0;font:600 12px/1 ui-monospace,Menlo,monospace;color:var(--ink-mute)}
 
 /* shots */
-.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;margin:1rem 0 1.6rem;align-items:start}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:1rem;margin:1rem 0 1.6rem;align-items:start}
 .shots figure{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
 .shots img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top center;display:block}
 .shots figcaption{padding:.55rem .8rem;font:600 12px/1 ui-monospace,Menlo,monospace;color:var(--ink-mute)}
