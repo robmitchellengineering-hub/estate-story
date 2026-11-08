@@ -60,22 +60,22 @@
     resize();
     window.addEventListener("resize", resize);
     const nodes = [
-      [-1.9, 0.35, 0], [-0.6, -0.7, 0.5], [0.6, -0.6, -0.4], [1.9, 0.3, 0],
-      [-1.0, 0.75, -0.7], [1.1, 0.7, 0.6], [0, 0.02, 0.15]
+      [-2.6, 0.35, 0], [-1.0, -0.8, 0.5], [1.0, -0.75, -0.4], [2.6, 0.3, 0],
+      [-1.5, 0.8, -0.7], [1.6, 0.75, 0.6], [0, 0.0, 0.2]
     ];
     const sizes = [0.5, 0.4, 0.42, 0.5, 0.38, 0.4, 0.32];
     const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[0,4],[1,5],[2,5]];
     const stop = rafLoop((t) => {
       ctx.clearRect(0, 0, w, h);
-      const PAD = 46;
-      const S = Math.min((w - 2 * PAD) / 4.3, (h - 2 * PAD) / 1.7);
+      const PAD = 40;
+      const S = (w - 2 * PAD) / 5.2;
       const cx = w / 2, cy = h / 2;
       const rot = t * 0.00011, cs = Math.cos(rot), sn = Math.sin(rot);
       const P = p => {
         const [x, y, z] = p;
         const xr = x * cs - z * sn, zr = x * sn + z * cs;
-        const persp = 1 / (2.1 - zr * 0.6);
-        return [cx + xr * S * persp, cy + y * S * persp, persp];
+        const d = 1 + zr * 0.12;
+        return [cx + xr * S * d, cy + y * S * d, d];
       };
       const pts = nodes.map(P);
       const lw = Math.max(1, S * 0.015);
