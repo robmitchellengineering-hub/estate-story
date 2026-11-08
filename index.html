@@ -172,12 +172,14 @@
 <!-- ============ CHAPTER 5: AIRMATRIX ============ -->
 <section class="chapter" id="airmatrix">
   <p class="scene">CHAPTER 05 — AIRMATRIX</p>
-  <h2 class="hook">The claim is latency.<br>The proof is a measurement.</h2>
+  <h2 class="hook">The claim is latency.<br>The proof is a field test.</h2>
   <div class="prose">
-    <p class="lead">AirMatrix is broadcast-grade wireless audio for live events. The whole problem is one number: <strong>how long does sound take to travel?</strong> And that number can’t be claimed — it has to be measured.</p>
-    <p>First measurement: an <strong>8.000&nbsp;ms round trip</strong>, measured on a loopback — with the honest caveat that real hardware hasn’t been tested yet. <span class="stamp stamp--verified">✓ VERIFIED on loopback</span></p>
-    <p>And they proved something even more useful: <strong>a virtual machine can’t measure timing</strong> — hundreds of xruns in a single run — so any “latency” number from a VM is fake by definition. The instrument gets the same skepticism as the claims. <span class="stamp stamp--verified">✓ VERIFIED</span></p>
-    <p>Every claim is built with its own killer. The sharpest one: <strong>“A lab that has never refused anything is not measuring.”</strong> When EQ can’t fix a room, AirMatrix will tell you so — the opposite of the sales motion. <span class="stamp stamp--built">◆ BUILT</span></p>
+    <p class="lead">AirMatrix is broadcast-grade, low-latency, synced audio over <strong>ordinary Wi-Fi</strong> — a full mixing desk and comms, working with the gear crews already own, bought once and owned.</p>
+    <p>The pass/fail line is one number per wireless link: <strong>Programme</strong> grade — 40&nbsp;ms or less, at most one dropout in ten minutes. <strong>Monitor</strong> — 20&nbsp;ms or less.</p>
+    <p class="lead">And it has real-air numbers now. <strong>Two real radios</strong>, run against each other: the paths fail independently, and first-copy-wins holds <strong>Programme</strong> grade. <span class="stamp stamp--verified">✓ VERIFIED — E15</span></p>
+    <p>Moving the stream clock onto the downlink <strong>cut the latency floor from the high 30s into the mid 20s of milliseconds</strong> — two to three times better than following the leader. <span class="stamp stamp--verified">✓ VERIFIED — S2/S3</span></p>
+    <p>The audio lab measures what it claims: <strong>0.001&nbsp;dB</strong> on a bit-exact loopback, then decay, clarity and the per-octave noise floor — all measured, and the lab <strong>refuses a bad capture</strong> instead of averaging over it. <span class="stamp stamp--verified">✓ VERIFIED</span></p>
+    <p>And the measuring is done in the real room — a <strong>Galaxy S24 Ultra</strong> walking the space with ARCore, reading every access point’s level and turning a signal gradient into a bearing. <span class="stamp stamp--verified">✓ VERIFIED</span></p>
   </div>
 
   <h3 class="subhead">The 3D analyser — live</h3>
@@ -197,7 +199,7 @@
   </div>
 
   <div class="prose">
-    <p>And the future of it: the <strong>mixing-desk brain</strong> — a fader on a MIDI controller produces a <em>measured</em> audio change, with a latency number attached. <span class="stamp stamp--vision">✦ VISION</span></p>
+    <p>Still to prove, and said plainly: the roam walk, a real <strong>Dante/AES67</strong> box in a show, and the two-radio hardware node. Everything above is real field data — this list is what hasn’t been measured yet.</p>
   </div>
 
   <div class="links">
