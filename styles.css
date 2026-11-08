@@ -182,6 +182,11 @@ main{max-width:1000px;margin:0 auto;padding:0 1.4rem}
 .explore__title{display:block;font-size:1.28rem;font-weight:800;color:var(--ink);margin-bottom:.3rem}
 .explore__desc{display:block;color:var(--ink-dim);font-size:.98rem}
 
+/* chapter links */
+.links{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1rem;margin:1.8rem 0 0;padding-top:1.1rem;border-top:1px solid var(--line)}
+.links__label{font:700 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;color:var(--ink-mute);text-transform:uppercase}
+.links a{color:var(--green);font-weight:600}
+
 /* cert */
 .cert{margin:1.6rem 0;display:flex;justify-content:center}
 .cert__card{width:100%;max-width:560px;border:1px solid var(--green-dim);border-radius:14px;background:var(--panel);
