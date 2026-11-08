@@ -54,55 +54,57 @@
     function resize() {
       const r = canvas.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = canvas.width = Math.floor(r.width * dpr); h = canvas.height = Math.floor(r.height * dpr);
+      w = canvas.width = Math.max(240, Math.floor(r.width * dpr));
+      h = canvas.height = Math.max(140, Math.floor(r.height * dpr));
     }
     resize();
     window.addEventListener("resize", resize);
-    // machine boxes: cx,cy,cz, size
-    const boxes = [
-      { c: [-1.1, 0.2, 0], s: 0.55 }, { c: [0, -0.35, 0.3], s: 0.42 },
-      { c: [1.1, 0.1, 0], s: 0.5 }, { c: [0, 0.45, -0.2], s: 0.36 },
-      { c: [-0.55, 0.55, -0.4], s: 0.3 }, { c: [0.55, -0.6, -0.3], s: 0.34 }
+    const nodes = [
+      [-1.9, 0.35, 0], [-0.6, -0.7, 0.5], [0.6, -0.6, -0.4], [1.9, 0.3, 0],
+      [-1.0, 0.75, -0.7], [1.1, 0.7, 0.6], [0, 0.02, 0.15]
     ];
-    const edges = [[0,1],[1,2],[2,3],[3,0],[0,2],[1,3],[0,4],[4,5],[5,2],[3,5],[1,5],[4,3]];
+    const sizes = [0.5, 0.4, 0.42, 0.5, 0.38, 0.4, 0.32];
+    const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[0,4],[1,5],[2,5]];
     const stop = rafLoop((t) => {
       ctx.clearRect(0, 0, w, h);
-      const s = Math.min(w, h) / 3.1;
+      const PAD = 46;
+      const S = Math.min((w - 2 * PAD) / 4.3, (h - 2 * PAD) / 1.7);
       const cx = w / 2, cy = h / 2;
-      const rot = t * 0.00012;
-      const cs = Math.cos(rot), sn = Math.sin(rot);
-      function project(p) {
+      const rot = t * 0.00011, cs = Math.cos(rot), sn = Math.sin(rot);
+      const P = p => {
         const [x, y, z] = p;
         const xr = x * cs - z * sn, zr = x * sn + z * cs;
-        const persp = 1 / (2.4 - zr);
-        return [cx + xr * s * persp, cy + y * s * persp, persp];
-      }
-      const pts = boxes.map(b => project(b.c));
-      // links (data pulses)
-      ctx.lineWidth = 1;
+        const persp = 1 / (2.1 - zr * 0.6);
+        return [cx + xr * S * persp, cy + y * S * persp, persp];
+      };
+      const pts = nodes.map(P);
+      const lw = Math.max(1, S * 0.015);
+      // links with data pulses
+      ctx.lineWidth = lw;
       edges.forEach((e, i) => {
-        const [x1, y1] = pts[e[0]], [x2, y2] = pts[e[1]];
-        ctx.strokeStyle = "rgba(74,222,128,0.18)"; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-        const f = ((t * 0.0004 + i * 0.13) % 1);
-        const px = x1 + (x2 - x1) * f, py = y1 + (y2 - y1) * f;
-        ctx.beginPath(); ctx.arc(px, py, 2.2, 0, Math.PI * 2); ctx.fillStyle = "rgba(74,222,128,0.9)"; ctx.fill();
+        const a = pts[e[0]], b = pts[e[1]];
+        ctx.strokeStyle = "rgba(74,222,128,0.34)";
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        const f = (t * 0.00035 + i * 0.11) % 1;
+        const px = a[0] + (b[0] - a[0]) * f, py = a[1] + (b[1] - a[1]) * f;
+        ctx.beginPath(); ctx.arc(px, py, Math.max(1.6, S * 0.013), 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(74,222,128,0.9)"; ctx.fill();
       });
-      // boxes as wireframe
-      boxes.forEach((b, i) => {
+      // nodes as wireframe boxes
+      nodes.forEach((n, i) => {
         const [x, y, p] = pts[i];
-        const sz = b.s * s * p;
-        const alpha = 0.5 + 0.4 * Math.sin(t * 0.001 + i);
+        const sz = sizes[i] * S * p;
+        const half = sz / 2, k = 0.7;
+        const alpha = 0.62 + 0.33 * Math.sin(t * 0.001 + i * 1.3);
         ctx.strokeStyle = "rgba(154,205,235," + alpha.toFixed(2) + ")";
-        ctx.lineWidth = 1.2;
-        const half = sz / 2;
-        const faces = [
-          [[x-half,y-half],[x+half,y-half],[x+half,y+half],[x-half,y+half]],
-          [[x-half*0.7,y-half*0.7],[x+half*0.7,y-half*0.7],[x+half*0.7,y+half*0.7],[x-half*0.7,y+half*0.7]]
-        ];
-        faces.forEach(fc => { ctx.beginPath(); fc.forEach((p2, j) => j ? ctx.lineTo(p2[0], p2[1]) : ctx.moveTo(p2[0], p2[1])); ctx.closePath(); ctx.stroke(); });
-        faces[0].forEach((p2, j) => { const q = faces[1][j]; ctx.beginPath(); ctx.moveTo(p2[0], p2[1]); ctx.lineTo(q[0], q[1]); ctx.stroke(); });
-        // label dot
-        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fillStyle = "rgba(74,222,128,0.9)"; ctx.fill();
+        ctx.lineWidth = lw;
+        const f = [[x - half, y - half * k], [x + half, y - half * k], [x + half, y + half * k], [x - half, y + half * k]];
+        const q = [[x - half * k, y - half * k * k], [x + half * k, y - half * k * k], [x + half * k, y + half * k * k], [x - half * k, y + half * k * k]];
+        ctx.beginPath(); f.forEach((pt, j) => j ? ctx.lineTo(pt[0], pt[1]) : ctx.moveTo(pt[0], pt[1])); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); q.forEach((pt, j) => j ? ctx.lineTo(pt[0], pt[1]) : ctx.moveTo(pt[0], pt[1])); ctx.closePath(); ctx.stroke();
+        f.forEach((pt, j) => { ctx.beginPath(); ctx.moveTo(pt[0], pt[1]); ctx.lineTo(q[j][0], q[j][1]); ctx.stroke(); });
+        ctx.beginPath(); ctx.arc(x, y, Math.max(1.8, S * 0.016), 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(74,222,128,0.9)"; ctx.fill();
       });
     });
     return stop;
